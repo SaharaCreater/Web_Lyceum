@@ -28,6 +28,31 @@
           "name": "Рим",
           "image_url": "data/easy_рим.png",
           "label": "Рим"
+        },
+        {
+          "name": "Ярославль",
+          "image_url": "data/easy_ярославль.png",
+          "label": "Ярославль"
+        },
+        {
+          "name": "Барселона",
+          "image_url": "data/easy_барселона.png",
+          "label": "Барселона"
+        },
+        {
+          "name": "Стамбул",
+          "image_url": "data/easy_стамбул.png",
+          "label": "Стамбул"
+        },
+        {
+          "name": "Стокгольм",
+          "image_url": "data/easy_стокгольм.png",
+          "label": "Стокгольм"
+        },
+        {
+          "name": "Токио",
+          "image_url": "data/easy_токио.png",
+          "label": "Токио"
         }
       ]
     },
