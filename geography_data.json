@@ -61,14 +61,54 @@
       "difficulty": "medium",
       "items": [
         {
-          "name": "Босфор",
-          "image_url": "",
-          "label": "Босфор"
+          "name": "Пекин",
+          "image_url": "data/medium_пекин.png",
+          "label": "Пекин"
         },
         {
-          "name": "Анталия",
-          "image_url": "",
-          "label": "Анталия"
+          "name": "Мехико",
+          "image_url": "data/medium_мехико.png",
+          "label": "Мехико"
+        },
+        {
+          "name": "Вена",
+          "image_url": "data/medium_вена.png",
+          "label": "Вена"
+        },
+        {
+          "name": "Хабаровск",
+          "image_url": "data/medium_хабаровск.png",
+          "label": "Хабаровск"
+        },
+        {
+          "name": "Буэнос-айрес",
+          "image_url": "data/medium_буэнос-айрес.png",
+          "label": "Буэнос-айрес"
+        },
+        {
+          "name": "Астана",
+          "image_url": "data/medium_астана.png",
+          "label": "Астана"
+        },
+        {
+          "name": "Оттава",
+          "image_url": "data/medium_оттава.png",
+          "label": "Оттава"
+        },
+        {
+          "name": "Прага",
+          "image_url": "data/medium_прага.png",
+          "label": "Прага"
+        },
+        {
+          "name": "Хельсинки",
+          "image_url": "data/medium_хельсинки.png",
+          "label": "Хельсинки"
+        },
+        {
+          "name": "Минск",
+          "image_url": "data/medium_минск.png",
+          "label": "Минск"
         }
       ]
     }
