@@ -6,27 +6,27 @@
       "items": [
         {
           "name": "Киев",
-          "image_url": "easy1.png",
+          "image_url": "data/easy_киев.png",
           "label": "Киев"
         },
         {
           "name": "Москва",
-          "image_url": "easy2.png",
+          "image_url": "data/easy_москва.png",
           "label": "Москва"
         },
         {
           "name": "Париж",
-          "image_url": "easy3.png",
+          "image_url": "data/easy_париж.png",
           "label": "Париж"
         },
         {
           "name": "Нью-Йорк",
-          "image_url": "easy4.png",
+          "image_url": "data/easy_нью-йорк.png",
           "label": "Нью-Йорк"
         },
         {
           "name": "Рим",
-          "image_url": "easy5.png",
+          "image_url": "data/easy_рим.png",
           "label": "Рим"
         }
       ]

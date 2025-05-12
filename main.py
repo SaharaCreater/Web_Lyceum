@@ -1,7 +1,7 @@
 import json
 import logging
-import random
-from telegram import Update, InputMediaPhoto
+from random import sample
+from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 from bot_token import TOKEN
 
@@ -18,26 +18,32 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
+reply_keyboard = [['/start'], ['/test', '/stats'], ['/help'], ['/stop']]
+first = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+point = 1
 
 # Стартовая команда
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global point
+    point = 0
     await update.message.reply_text(
-        "Привет! Я бот c географическими тестами.\n"
+    "Привет! Я бот c географическими тестами.\n"
         "Используйте /test, чтобы начать тест.\n"
-        "Используйте /stats для просмотра статистики."
+        "Используйте /stats для просмотра статистики.", reply_markup=first
     )
 
 
 # Старт теста
 async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global point
+    point = 1
     user_id = update.message.from_user.id
     # Выбор теста (по умолчанию первый)
     test = data['tests'][0]
     # Инициализация сессии
     user_sessions[user_id] = {
         'test': test,
-        'questions': random.sample(test['items'], len(test['items'])),
+        'questions': sample(test['items'], len(test['items'])),
         'current_index': 0,
         'correct': 0,
         'incorrect': 0,
@@ -49,6 +55,9 @@ async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # Отправка вопроса
 async def send_question(update: Update, user_id: int):
+    global point
+    if point == 0:
+        return
     session = user_sessions[user_id]
     idx = session['current_index']
     if idx >= len(session['questions']):
@@ -56,7 +65,7 @@ async def send_question(update: Update, user_id: int):
         await update.message.reply_text(
             f"Тест завершен!\nПравильных ответов: {session['correct']}\n"
             f"Неправильных: {session['incorrect']}"
-        )
+            )
         return
     item = session['questions'][idx]
     session['current_item'] = item
@@ -67,6 +76,9 @@ async def send_question(update: Update, user_id: int):
 
 # Обработка ответов
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global point
+    if point == 0:
+        return
     user_id = update.message.from_user.id
     if user_id not in user_sessions:
         await update.message.reply_text("Пожалуйста, начните тест командой /test")
@@ -88,26 +100,31 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Следующий вопрос
     await send_question(update, user_id)
 
+
 # Статистика
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global point
+    point = 0
     stats_text = "Ваша статистика:\n"
+    name = update.message.from_user.first_name
     for user_id, session in user_sessions.items():
         stats_text += (
-            f"Пользователь {user_id}:\n"
+            f"Пользователь {name}:\n"
             f"Правильных: {session['correct']}\n"
             f"Неправильных: {session['incorrect']}\n\n"
         )
     await update.message.reply_text(stats_text)
 
+
 # Основная функция
 def main():
     application = Application.builder().token(TOKEN).build()
-
     application.add_handler(CommandHandler('start', start))
     application.add_handler(CommandHandler('test', test_command))
     application.add_handler(CommandHandler('stats', stats_command))
+    application.add_handler(CommandHandler('help', start))
+    application.add_handler(CommandHandler('stop', stats_command))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
     application.run_polling()
 
 
