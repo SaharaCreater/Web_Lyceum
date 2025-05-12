@@ -111,6 +111,62 @@
           "label": "Минск"
         }
       ]
+    },
+    {
+      "name": "Сложный",
+      "difficulty": "hard",
+      "items": [
+        {
+          "name": "Канберра",
+          "image_url": "data/hard_канберра.png",
+          "label": "Канберра"
+        },
+        {
+          "name": "Саранск",
+          "image_url": "data/hard_мехико.png",
+          "label": "Саранск"
+        },
+        {
+          "name": "Милан",
+          "image_url": "data/hard_Милан.png",
+          "label": "Милан"
+        },
+        {
+          "name": "Ханой",
+          "image_url": "data/hard_ханой.png",
+          "label": "Ханой"
+        },
+        {
+          "name": "Триполи",
+          "image_url": "data/hard_триполи.png",
+          "label": "Триполи"
+        },
+        {
+          "name": "Сиэтл",
+          "image_url": "data/hard_сиэтл.png",
+          "label": "Сиэтл"
+        },
+        {
+          "name": "Ташкент",
+          "image_url": "data/hard_ташкент.png",
+          "label": "Ташкент"
+        },
+        {
+          "name": "Гавана",
+          "image_url": "data/hard_гавана.png",
+          "label": "Гавана"
+        },
+        {
+          "name": "Дамаск",
+          "image_url": "data/hard_дамаск.png",
+          "label": "Дамаск"
+        },
+        {
+          "name": "Сантьяго",
+          "image_url": "data/hard_сантьяго.png",
+          "label": "Сантьяго"
+        }
+      ]
     }
   ]
 }
