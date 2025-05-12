@@ -62,6 +62,7 @@ async def send_question(update: Update, user_id: int):
     idx = session['current_index']
     if idx >= len(session['questions']):
         # Тест завершён
+        point = 0
         await update.message.reply_text(
             f"Тест завершен!\nПравильных ответов: {session['correct']}\n"
             f"Неправильных: {session['incorrect']}"
