@@ -1,0 +1,51 @@
+{
+  "tests": [
+    {
+      "name": "Легкий",
+      "difficulty": "easy",
+      "items": [
+        {
+          "name": "Киев",
+          "image_url": "easy1.png",
+          "label": "Киев"
+        },
+        {
+          "name": "Москва",
+          "image_url": "easy2.png",
+          "label": "Москва"
+        },
+        {
+          "name": "Париж",
+          "image_url": "easy3.png",
+          "label": "Париж"
+        },
+        {
+          "name": "Нью-Йорк",
+          "image_url": "easy4.png",
+          "label": "Нью-Йорк"
+        },
+        {
+          "name": "Рим",
+          "image_url": "easy5.png",
+          "label": "Рим"
+        }
+      ]
+    },
+    {
+      "name": "Средний",
+      "difficulty": "medium",
+      "items": [
+        {
+          "name": "Босфор",
+          "image_url": "",
+          "label": "Босфор"
+        },
+        {
+          "name": "Анталия",
+          "image_url": "",
+          "label": "Анталия"
+        }
+      ]
+    }
+  ]
+}
