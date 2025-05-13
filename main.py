@@ -1,4 +1,5 @@
 import json
+import csv
 import logging
 from random import sample
 from telegram import Update, ReplyKeyboardMarkup
@@ -22,12 +23,13 @@ reply_keyboard = [['/start'], ['/test', '/stats'], ['/help'], ['/stop']]
 first = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 point = 1
 
+
 # Стартовая команда
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global point
     point = 0
     await update.message.reply_text(
-    "Привет! Я бот c географическими тестами.\n"
+        "Привет! Я бот c географическими тестами.\n"
         "Используйте /test, чтобы начать тест.\n"
         "Используйте /stats для просмотра статистики.", reply_markup=first
     )
@@ -67,6 +69,16 @@ async def send_question(update: Update, user_id: int):
             f"Тест завершен!\nПравильных ответов: {session['correct']}\n"
             f"Неправильных: {session['incorrect']}"
             )
+        name = update.message.from_user.first_name
+        # Запись данных в csv-файл
+        with open("test_stats.csv", 'r', newline='', encoding='utf-8') as csvfile:
+            reader = list(csv.reader(csvfile))
+            reader[0] = ['Пользователь', name]
+            reader[1] = ['Правильных ответов', session['correct']]
+            reader[2] = ['Неправильных ответов', session['incorrect']]
+        with open("test_stats.csv", 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows(reader)
         return
     item = session['questions'][idx]
     session['current_item'] = item
