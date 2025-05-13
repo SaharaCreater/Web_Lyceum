@@ -19,8 +19,11 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-reply_keyboard = [['/start'], ['/test', '/stats'], ['/help'], ['/stop']]
+reply_keyboard = [['/start'], ['/test', '/level', '/stats'], ['/help'], ['/stop']]
 first = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+level = [['лёгкий', 'средний', 'сложный']]
+second = ReplyKeyboardMarkup(level, one_time_keyboard=True)
+LEVEL = 1
 point = 1
 
 
@@ -35,13 +38,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def test_level(update, context):
+    global point
+    await update.message.reply_text(
+        'Выбери сложность', reply_markup=second
+    )
+
+
 # Старт теста
 async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global point
     point = 1
     user_id = update.message.from_user.id
     # Выбор теста (по умолчанию первый)
-    test = data['tests'][0]
+    name = ['лёгкий', 'средний', 'сложный'][LEVEL - 1]
+    test = data['tests'][LEVEL - 1]
+    await update.message.reply_text(f"Уровень: {name}")
     # Инициализация сессии
     user_sessions[user_id] = {
         'test': test,
@@ -90,7 +102,19 @@ async def send_question(update: Update, user_id: int):
 # Обработка ответов
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global point
+    global LEVEL
     if point == 0:
+        return
+    name = update.message.text
+    if name in ['лёгкий', 'средний', 'сложный']:
+        point = 0
+        if 'средний' in name:
+            LEVEL = 2
+        elif 'сложный' in name:
+            LEVEL = 3
+        else:
+            LEVEL = 1
+        await update.message.reply_text(f"Уровень: {name}\nТеперь вы можете начать тест командой /test", reply_markup=first)
         return
     user_id = update.message.from_user.id
     if user_id not in user_sessions:
@@ -133,6 +157,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     application = Application.builder().token(TOKEN).build()
     application.add_handler(CommandHandler('start', start))
+    application.add_handler(CommandHandler('level', test_level))
     application.add_handler(CommandHandler('test', test_command))
     application.add_handler(CommandHandler('stats', stats_command))
     application.add_handler(CommandHandler('help', start))
