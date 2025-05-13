@@ -21,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 reply_keyboard = [['/start'], ['/test', '/level', '/stats'], ['/help'], ['/stop']]
 first = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
-level = [['лёгкий', 'средний', 'сложный']]
+level = [['/easy', '/normal', '/hard']]
 second = ReplyKeyboardMarkup(level, one_time_keyboard=True)
 LEVEL = 1
 point = 1
@@ -38,11 +38,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def test_level(update, context):
-    global point
+async def level(update, context):
     await update.message.reply_text(
         'Выбери сложность', reply_markup=second
     )
+
+async def test_level(update, context):
+    global point
+    global LEVEL
+    text = update.message.text
+    if text == '/easy':
+        LEVEL = 1
+    elif text == '/normal':
+        LEVEL = 2
+    else:
+        LEVEL = 3
+    point = 0
+    await update.message.reply_text(f"Уровень: {text}\nТеперь вы можете начать тест командой /test", reply_markup=first)
+    return
 
 
 # Старт теста
@@ -102,19 +115,7 @@ async def send_question(update: Update, user_id: int):
 # Обработка ответов
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global point
-    global LEVEL
     if point == 0:
-        return
-    name = update.message.text
-    if name in ['лёгкий', 'средний', 'сложный']:
-        point = 0
-        if 'средний' in name:
-            LEVEL = 2
-        elif 'сложный' in name:
-            LEVEL = 3
-        else:
-            LEVEL = 1
-        await update.message.reply_text(f"Уровень: {name}\nТеперь вы можете начать тест командой /test", reply_markup=first)
         return
     user_id = update.message.from_user.id
     if user_id not in user_sessions:
@@ -157,7 +158,10 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     application = Application.builder().token(TOKEN).build()
     application.add_handler(CommandHandler('start', start))
-    application.add_handler(CommandHandler('level', test_level))
+    application.add_handler(CommandHandler('level', level))
+    application.add_handler(CommandHandler('easy', test_level))
+    application.add_handler(CommandHandler('normal', test_level))
+    application.add_handler(CommandHandler('hard', test_level))
     application.add_handler(CommandHandler('test', test_command))
     application.add_handler(CommandHandler('stats', stats_command))
     application.add_handler(CommandHandler('help', start))
