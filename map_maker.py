@@ -442,8 +442,262 @@ with open(map_file, "wb") as file:
     file.write(response.content)
 
 
+ll_spn = '-70.6483,-33.4569&spn=7,7'
+pt = "-70.6483,-33.4569,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_сантьяго.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
 
 
+ll_spn = '13.4105,52.5244&spn=7,7'
+pt = "13.4105,52.5244,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "easy_берлин.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
 
 
+ll_spn = '-0.12574,51.5085&spn=7,7'
+pt = "-0.12574,51.5085,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "easy_лондон.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
 
+
+ll_spn = '33.0925,68.9792&spn=7,7'
+pt = "33.0925,68.9792,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "easy_мурманск.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '23.7278,37.9838&spn=7,7'
+pt = "23.7278,37.9838,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "easy_афины.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+ll_spn = '31.2497,30.0626&spn=7,7'
+pt = "31.2497,30.0626,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "easy_каир.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '55.1713,25.0657&spn=7,7'
+pt = "55.1713,25.0657,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "easy_дубай.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '46.0086,51.5406&spn=7,7'
+pt = "46.0086,51.5406,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "medium_саратов.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+ll_spn = '-80.1937,25.7743&spn=7,7'
+pt = "-80.1937,25.7743,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "medium_майами.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+ll_spn = '151.207,-33.8679&spn=7,7'
+pt = "151.207,-33.8679,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "medium_сидней.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '18.4232,-33.9258&spn=7,7'
+pt = "18.4232,-33.9258,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "medium_кейптаун.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '60.6122,56.8519&spn=7,7'
+pt = "60.6122,56.8519,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "medium_екатеринбург.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+ll_spn = '114.175,22.2783&spn=7,7'
+pt = "114.175,22.2783,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "medium_гонконг.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '14.5051,46.0511&spn=7,7'
+pt = "14.5051,46.0511,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_любляна.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '9.52154,47.1415&spn=7,7'
+pt = "9.52154,47.1415,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_вадуц.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '19.8189,41.3275&spn=7,7'
+pt = "19.8189,41.3275,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_тирана.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '-2.97794,53.4106&spn=7,7'
+pt = "-2.97794,53.4106,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_ливерпуль.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+ll_spn = '38.7469,9.02497&spn=7,7'
+pt = "38.7469,9.02497,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_аддис-абеба.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
+
+
+ll_spn = '40.4414,56.4281&spn=7,7'
+pt = "40.4414,56.4281,pm2dbl"
+map_request = f"{server_address}{ll_spn}&apikey={api_key}&pt={pt}&style=tags.all:locality|stylers.visibility:off"
+response = requests.get(map_request)
+if not response:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
+map_file = "hard_суздаль.png"
+with open(map_file, "wb") as file:
+    file.write(response.content)
