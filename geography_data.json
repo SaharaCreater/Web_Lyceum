@@ -53,6 +53,36 @@
           "name": "Токио",
           "image_url": "data/easy_токио.png",
           "label": "Токио"
+        },
+        {
+          "name": "Берлин",
+          "image_url": "data/easy_берлин.png",
+          "label": "Берлин"
+        },
+        {
+          "name": "Лондон",
+          "image_url": "data/easy_лондон.png",
+          "label": "Лондон"
+        },
+        {
+          "name": "Мурманск",
+          "image_url": "data/easy_мурманск.png",
+          "label": "Мурманск"
+        },
+        {
+          "name": "Афины",
+          "image_url": "data/easy_афины.png",
+          "label": "Афины"
+        },
+        {
+          "name": "Каир",
+          "image_url": "data/easy_каир.png",
+          "label": "Каир"
+        },
+        {
+          "name": "Дубай",
+          "image_url": "data/easy_дубай.png",
+          "label": "Дубай"
         }
       ]
     },
@@ -109,6 +139,36 @@
           "name": "Минск",
           "image_url": "data/medium_минск.png",
           "label": "Минск"
+        },
+        {
+          "name": "Саратов",
+          "image_url": "data/medium_саратов.png",
+          "label": "Саратов"
+        },
+        {
+          "name": "Майами",
+          "image_url": "data/medium_майами.png",
+          "label": "Майами"
+        },
+        {
+          "name": "Сидней",
+          "image_url": "data/medium_сидней.png",
+          "label": "Сидней"
+        },
+        {
+          "name": "Кейптаун",
+          "image_url": "data/medium_кейптаун.png",
+          "label": "Кейптаун"
+        },
+        {
+          "name": "Екатеринбург",
+          "image_url": "data/medium_екатеринбург.png",
+          "label": "Екатеринбург"
+        },
+        {
+          "name": "Гонконг",
+          "image_url": "data/medium_гонконг.png",
+          "label": "Гонконг"
         }
       ]
     },
@@ -165,6 +225,36 @@
           "name": "Сантьяго",
           "image_url": "data/hard_сантьяго.png",
           "label": "Сантьяго"
+        },
+        {
+          "name": "Любляна",
+          "image_url": "data/hard_любляна.png",
+          "label": "Любляна"
+        },
+        {
+          "name": "Вадуц",
+          "image_url": "data/hard_вадуц.png",
+          "label": "Вадуц"
+        },
+        {
+          "name": "Тирана",
+          "image_url": "data/hard_тирана.png",
+          "label": "Тирана"
+        },
+        {
+          "name": "Аддис-Абеба",
+          "image_url": "data/hard_аддис-абеба.png",
+          "label": "Аддис-Абеба"
+        },
+        {
+          "name": "Ливерпуль",
+          "image_url": "data/hard_ливерпуль.png",
+          "label": "Ливерпуль"
+        },
+        {
+          "name": "Суздаль",
+          "image_url": "data/hard_суздаль.png",
+          "label": "Суздаль"
         }
       ]
     }
