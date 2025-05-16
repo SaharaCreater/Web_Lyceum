@@ -67,7 +67,7 @@ async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Инициализация сессии
     user_sessions[user_id] = {
         'test': test,
-        'questions': sample(test['items'], len(test['items'])),
+        'questions': sample(test['items'], 10),
         'current_index': 0,
         'correct': 0,
         'incorrect': 0,
