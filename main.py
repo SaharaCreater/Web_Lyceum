@@ -23,18 +23,18 @@ reply_keyboard = [['/start'], ['/test', '/level', '/stats'], ['/help'], ['/stop'
 first = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 level = [['/easy', '/normal', '/hard']]
 second = ReplyKeyboardMarkup(level, one_time_keyboard=True)
-LEVEL = 1
-point = 1
 
 
 # Стартовая команда
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global point
-    point = 0
+    context.user_data["point"] = 0
+    context.user_data["level"] = 1
     await update.message.reply_text(
         "Привет! Я бот c географическими тестами.\n"
         "Используйте /test, чтобы начать тест.\n"
-        "Используйте /stats для просмотра статистики.", reply_markup=first
+        "Используйте /stats для просмотра статистики.\n"
+        "Используйте /level для смены уровня сложности.\n"
+        "Уровень по умолчанию: легкий", reply_markup=first
     )
 
 
@@ -44,28 +44,25 @@ async def level(update, context):
     )
 
 async def test_level(update, context):
-    global point
-    global LEVEL
     text = update.message.text
     if text == '/easy':
-        LEVEL = 1
+        context.user_data["level"] = 1
     elif text == '/normal':
-        LEVEL = 2
+        context.user_data["level"] = 2
     else:
-        LEVEL = 3
-    point = 0
+        context.user_data["level"] = 3
+    context.user_data["point"] = 0
     await update.message.reply_text(f"Уровень: {text}\nТеперь вы можете начать тест командой /test", reply_markup=first)
     return
 
 
 # Старт теста
 async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global point
-    point = 1
+    context.user_data["point"] = 1
     user_id = update.message.from_user.id
     # Выбор теста (по умолчанию первый)
-    name = ['лёгкий', 'средний', 'сложный'][LEVEL - 1]
-    test = data['tests'][LEVEL - 1]
+    name = ['лёгкий', 'средний', 'сложный'][context.user_data["level"] - 1]
+    test = data['tests'][context.user_data["level"] - 1]
     await update.message.reply_text(f"Уровень: {name}")
     # Инициализация сессии
     user_sessions[user_id] = {
@@ -77,33 +74,46 @@ async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         'awaiting_answer': False,
         'current_item': None
     }
-    await send_question(update, user_id)
+    await send_question(update, user_id, context)
 
 
 # Отправка вопроса
-async def send_question(update: Update, user_id: int):
-    global point
-    if point == 0:
+async def send_question(update: Update, user_id: int, context: ContextTypes.DEFAULT_TYPE):
+    if context.user_data["point"] == 0:
         return
     session = user_sessions[user_id]
     idx = session['current_index']
     if idx >= len(session['questions']):
+        context.user_data["point"] = 0
         # Тест завершён
-        point = 0
         await update.message.reply_text(
             f"Тест завершен!\nПравильных ответов: {session['correct']}\n"
             f"Неправильных: {session['incorrect']}"
             )
         name = update.message.from_user.first_name
-        # Запись данных в csv-файл
-        with open("test_stats.csv", 'r', newline='', encoding='utf-8') as csvfile:
-            reader = list(csv.reader(csvfile))
-            reader[0] = ['Пользователь', name]
-            reader[1] = ['Правильных ответов', session['correct']]
-            reader[2] = ['Неправильных ответов', session['incorrect']]
-        with open("test_stats.csv", 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerows(reader)
+        with open('test_stats.csv', "r+", newline="", encoding="utf8") as csvfile:
+            reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+            lines = list(reader)
+            if name in [a[0] for a in lines]:
+                n = 0
+                for i in lines:
+                    if i[0] == name:
+                        if int(i[context.user_data["level"]]) < int(session['correct']):
+                            lines[n][int(context.user_data["level"])] = str(session['correct'])
+                            with open('test_stats.csv', 'w', newline='', encoding='utf-8') as file:
+                                writer = csv.writer(file)
+                                writer.writerows(lines)
+                        break
+                    n += 1
+            else:
+                writer = csv.writer(
+                    csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                if context.user_data["level"] == 1:
+                    writer.writerow([name, session['correct'], 0, 0])
+                elif context.user_data["level"] == 2:
+                    writer.writerow([name, 0, session['correct'], 0])
+                elif context.user_data["level"] == 3:
+                    writer.writerow([name, 0, 0, session['correct']])
         return
     item = session['questions'][idx]
     session['current_item'] = item
@@ -114,8 +124,7 @@ async def send_question(update: Update, user_id: int):
 
 # Обработка ответов
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global point
-    if point == 0:
+    if context.user_data["point"] == 0:
         return
     user_id = update.message.from_user.id
     if user_id not in user_sessions:
@@ -136,21 +145,36 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session['current_index'] += 1
     await update.message.reply_text(reply)
     # Следующий вопрос
-    await send_question(update, user_id)
+    await send_question(update, user_id, context)
 
 
 # Статистика
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global point
-    point = 0
+    context.user_data["point"] = 0
     stats_text = "Ваша статистика:\n"
     name = update.message.from_user.first_name
-    for user_id, session in user_sessions.items():
+    with open('test_stats.csv', "r+", newline="", encoding="utf8") as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        lines = list(reader)
+        is_user = False
+        for i in lines:
+            if i[0] == name:
+                is_user = True
+                easy = i[1]
+                normal = i[2]
+                hard = i[3]
+                break
+
+    if is_user:
         stats_text += (
             f"Пользователь {name}:\n"
-            f"Правильных: {session['correct']}\n"
-            f"Неправильных: {session['incorrect']}\n\n"
-        )
+            f"Лучший результат в лёгком тесте: {easy} из 10\n"
+            f"Лучший результат в среднем тесте: {normal} из 10\n"
+            f"Лучший результат в сложном тесте: {hard} из 10\n"
+            )
+    else:
+        stats_text += "Не пройден ни один тест\n"
+
     await update.message.reply_text(stats_text)
 
 
@@ -165,7 +189,7 @@ def main():
     application.add_handler(CommandHandler('test', test_command))
     application.add_handler(CommandHandler('stats', stats_command))
     application.add_handler(CommandHandler('help', start))
-    application.add_handler(CommandHandler('stop', stats_command))
+    application.add_handler(CommandHandler('stop', start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     application.run_polling()
 
