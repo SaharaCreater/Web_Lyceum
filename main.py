@@ -98,10 +98,19 @@ async def send_question(update: Update, user_id: int, context: ContextTypes.DEFA
         if result:
             if context.user_data['level'] == 1:
                 p = 'easy'
+                if result[2] < session['correct']:
+                    con.close()
+                    return
             elif context.user_data['level'] == 2:
                 p = 'normal'
+                if result[3] < session['correct']:
+                    con.close()
+                    return
             else:
                 p = 'hard'
+                if result[4] < session['correct']:
+                    con.close()
+                    return
             st = f"""UPDATE main_table SET test_{p} = ? WHERE name_user = ?"""
             cur.execute(st, (session['correct'], name))
         else:
