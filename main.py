@@ -1,5 +1,5 @@
 import json
-import csv
+import sqlite3
 import logging
 from random import sample
 from telegram import Update, ReplyKeyboardMarkup
@@ -91,29 +91,32 @@ async def send_question(update: Update, user_id: int, context: ContextTypes.DEFA
             f"Неправильных: {session['incorrect']}"
             )
         name = update.message.from_user.first_name
-        with open('test_stats.csv', "r+", newline="", encoding="utf8") as csvfile:
-            reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-            lines = list(reader)
-            if name in [a[0] for a in lines]:
-                n = 0
-                for i in lines:
-                    if i[0] == name:
-                        if int(i[context.user_data["level"]]) < int(session['correct']):
-                            lines[n][int(context.user_data["level"])] = str(session['correct'])
-                            with open('test_stats.csv', 'w', newline='', encoding='utf-8') as file:
-                                writer = csv.writer(file)
-                                writer.writerows(lines)
-                        break
-                    n += 1
+        con = sqlite3.connect("geo_bot.db")
+        cur = con.cursor()
+        result = cur.execute("""SELECT name_user FROM main_table
+                    WHERE name_user = ?""", (name,)).fetchall()
+        if result:
+            if context.user_data['level'] == 1:
+                p = 'easy'
+            elif context.user_data['level'] == 2:
+                p = 'normal'
             else:
-                writer = csv.writer(
-                    csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                if context.user_data["level"] == 1:
-                    writer.writerow([name, session['correct'], 0, 0])
-                elif context.user_data["level"] == 2:
-                    writer.writerow([name, 0, session['correct'], 0])
-                elif context.user_data["level"] == 3:
-                    writer.writerow([name, 0, 0, session['correct']])
+                p = 'hard'
+            st = f"""UPDATE main_table SET test_{p} = ? WHERE name_user = ?"""
+            cur.execute(st, (session['correct'], name))
+        else:
+            if context.user_data['level'] == 1:
+                st = """INSERT INTO main_table(name_user, test_easy,
+                test_normal, test_hard) VALUES (?, ?, 0, 0)"""
+                cur.execute(st, (name, session['correct']))
+            elif context.user_data['level'] == 2:
+                st = """INSERT INTO main_table VALUES (?, 0, ?, 0)"""
+                cur.execute(st, (name, session['correct']))
+            else:
+                st = """INSERT INTO main_table VALUES (?, 0, 0, ?)"""
+                cur.execute(st, (name, session['correct']))
+        con.commit()
+        con.close()
         return
     item = session['questions'][idx]
     session['current_item'] = item
@@ -153,25 +156,19 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["point"] = 0
     stats_text = "Ваша статистика:\n"
     name = update.message.from_user.first_name
-    with open('test_stats.csv', "r+", newline="", encoding="utf8") as csvfile:
-        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-        lines = list(reader)
-        is_user = False
-        for i in lines:
-            if i[0] == name:
-                is_user = True
-                easy = i[1]
-                normal = i[2]
-                hard = i[3]
-                break
-
-    if is_user:
+    con = sqlite3.connect("geo_bot.db")
+    cur = con.cursor()
+    result = cur.execute("""SELECT * FROM main_table
+                        WHERE name_user = ?""", (name,)).fetchall()
+    if result:
+        easy, normal, hard = result[0][2], result[0][3], result[0][4]
         stats_text += (
             f"Пользователь {name}:\n"
             f"Лучший результат в лёгком тесте: {easy} из 10\n"
             f"Лучший результат в среднем тесте: {normal} из 10\n"
             f"Лучший результат в сложном тесте: {hard} из 10\n"
             )
+        con.close()
     else:
         stats_text += "Не пройден ни один тест\n"
 
