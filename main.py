@@ -93,22 +93,23 @@ async def send_question(update: Update, user_id: int, context: ContextTypes.DEFA
         name = update.message.from_user.first_name
         con = sqlite3.connect("geo_bot.db")
         cur = con.cursor()
-        result = cur.execute("""SELECT name_user FROM main_table
+        result = cur.execute("""SELECT * FROM main_table
                     WHERE name_user = ?""", (name,)).fetchall()
         if result:
+            p = 0
             if context.user_data['level'] == 1:
                 p = 'easy'
-                if result[2] < session['correct']:
+                if result[0][2] >= session['correct']:
                     con.close()
                     return
             elif context.user_data['level'] == 2:
                 p = 'normal'
-                if result[3] < session['correct']:
+                if result[0][3] >= session['correct']:
                     con.close()
                     return
             else:
                 p = 'hard'
-                if result[4] < session['correct']:
+                if result[0][4] >= session['correct']:
                     con.close()
                     return
             st = f"""UPDATE main_table SET test_{p} = ? WHERE name_user = ?"""
@@ -119,10 +120,12 @@ async def send_question(update: Update, user_id: int, context: ContextTypes.DEFA
                 test_normal, test_hard) VALUES (?, ?, 0, 0)"""
                 cur.execute(st, (name, session['correct']))
             elif context.user_data['level'] == 2:
-                st = """INSERT INTO main_table VALUES (?, 0, ?, 0)"""
+                st = """INSERT INTO main_table(name_user, test_easy,
+                test_normal, test_hard) VALUES (?, 0, ?, 0)"""
                 cur.execute(st, (name, session['correct']))
             else:
-                st = """INSERT INTO main_table VALUES (?, 0, 0, ?)"""
+                st = """INSERT INTO main_table(name_user, test_easy,
+                test_normal, test_hard) VALUES (?, 0, 0, ?)"""
                 cur.execute(st, (name, session['correct']))
         con.commit()
         con.close()
