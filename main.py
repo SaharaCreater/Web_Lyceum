@@ -96,20 +96,19 @@ async def send_question(update: Update, user_id: int, context: ContextTypes.DEFA
         result = cur.execute("""SELECT * FROM main_table
                     WHERE name_user = ?""", (name,)).fetchall()
         if result:
-            p = 0
             if context.user_data['level'] == 1:
                 p = 'easy'
-                if result[0][2] >= session['correct']:
+                if result[0][2] > session['correct']:
                     con.close()
                     return
             elif context.user_data['level'] == 2:
                 p = 'normal'
-                if result[0][3] >= session['correct']:
+                if result[0][3] > session['correct']:
                     con.close()
                     return
             else:
                 p = 'hard'
-                if result[0][4] >= session['correct']:
+                if result[0][4] > session['correct']:
                     con.close()
                     return
             st = f"""UPDATE main_table SET test_{p} = ? WHERE name_user = ?"""
