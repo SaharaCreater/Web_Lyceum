@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-reply_keyboard = [['/start'], ['/test', '/level', '/stats'], ['/help'], ['/stop']]
+reply_keyboard = [['/start'], ['/test', '/level', '/stats'], ['/help']]
 first = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 level = [['/easy', '/normal', '/hard']]
 second = ReplyKeyboardMarkup(level, one_time_keyboard=True)
@@ -189,7 +189,6 @@ def main():
     application.add_handler(CommandHandler('test', test_command))
     application.add_handler(CommandHandler('stats', stats_command))
     application.add_handler(CommandHandler('help', start))
-    application.add_handler(CommandHandler('stop', start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     application.run_polling()
 
